@@ -3,6 +3,7 @@ const passport = require("passport");
 const JWT = require("jsonwebtoken");
 let User = require("../../models/User.model");
 const passportConfig = require("../../passport");
+require("dotenv").config();
 
 const signToken = (userID) => {
   return JWT.sign({ iss: "Sohag", sub: userID }, process.env.secretOrKey, {
