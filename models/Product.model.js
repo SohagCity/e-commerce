@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const PhoneSchema = new Schema(
+const ProductSchema = new Schema(
   {
     title: { type: String, required: true },
     img: { type: String, required: true },
@@ -18,6 +18,6 @@ const PhoneSchema = new Schema(
   }
 );
 
-const Phone = mongoose.model("Phone", PhoneSchema);
+const Product = mongoose.model("Product", ProductSchema);
 
-module.exports = Phone;
+module.exports = Product;

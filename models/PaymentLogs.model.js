@@ -6,19 +6,13 @@ const PaymentLogsSchema = new Schema(
   {
     name: { type: String, required: true },
     address: { type: String, required: true },
-    paymentDetails: {
-      paymentMethod: { type: String, required: true },
+    card: {
+      name: { type: String, required: true },
+      cvv: { type: Number, required: true },
       cardNo: { type: Number, required: true },
       expiryDate: { type: String, required: true },
     },
-    products: [
-      {
-        title: { type: String, required: true },
-        price: { type: Number, required: true },
-        count: { type: Number, required: true },
-        total: { type: Number, required: true },
-      },
-    ],
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     total: { type: Number, required: true },
   },
   {

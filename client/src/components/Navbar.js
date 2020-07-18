@@ -54,9 +54,9 @@ class NavigationBar extends Component {
           <Nav>
             {this.context.isAuthenticated ? (
               <NavDropdown title="Account" id="collasible-nav-dropdown">
-                <NavDropdown.Item>Profile</NavDropdown.Item>
+                <NavDropdown.Item href="/profile"> Profile</NavDropdown.Item>
                 {this.context.user.role === "admin" ? (
-                  <NavDropdown.Item>Admin</NavDropdown.Item>
+                  <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
                 ) : null}
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/" onClick={this.onClickLogoutHandler}>

@@ -1,9 +1,9 @@
 const router = require("express").Router();
-let Phone = require("../../models/Phone.model");
+let Product = require("../../models/Product.model");
 
 router.route("/").get((req, res) => {
-  Phone.find()
-    .then((phones) => res.json(phones))
+  Product.find()
+    .then((products) => res.json(products))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
@@ -17,7 +17,7 @@ router.route("/add").post((req, res) => {
   const count = Number(req.body.count);
   const total = Number(req.body.total);
 
-  const newPhone = new Phone({
+  const newProduct = new Product({
     title,
     img,
     price,
@@ -28,39 +28,39 @@ router.route("/add").post((req, res) => {
     total,
   });
 
-  newPhone
+  newProduct
     .save()
-    .then(() => res.json("Phone added!"))
+    .then(() => res.json("Product added!"))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/:id").get((req, res) => {
-  Phone.findById(req.params.id)
-    .then((phone) => res.json(phone))
+  Product.findById(req.params.id)
+    .then((product) => res.json(product))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/:id").delete((req, res) => {
-  Phone.findByIdAndDelete(req.params.id)
-    .then(() => res.json("Phone deleted."))
+  Product.findByIdAndDelete(req.params.id)
+    .then(() => res.json("Product deleted."))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/update/:id").post((req, res) => {
-  Phone.findById(req.params.id)
-    .then((phone) => {
-      phone.title = req.body.title;
-      phone.img = req.body.img;
-      phone.price = Number(req.body.price);
-      phone.company = req.body.company;
-      phone.info = req.body.info;
-      phone.inCart = Boolean(req.body.inCart);
-      phone.count = Number(req.body.count);
-      phone.total = Number(req.body.total);
+  Product.findById(req.params.id)
+    .then((product) => {
+      product.title = req.body.title;
+      product.img = req.body.img;
+      product.price = Number(req.body.price);
+      product.company = req.body.company;
+      product.info = req.body.info;
+      product.inCart = Boolean(req.body.inCart);
+      product.count = Number(req.body.count);
+      product.total = Number(req.body.total);
 
-      phone
+      product
         .save()
-        .then(() => res.json("Phone updated!"))
+        .then(() => res.json("Product updated!"))
         .catch((err) => res.status(400).json("Error: " + err));
     })
     .catch((err) => res.status(400).json("Error: " + err));

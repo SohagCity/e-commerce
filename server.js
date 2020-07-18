@@ -23,8 +23,8 @@ connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 
-const phonesRouter = require("./routes/api/phones");
-app.use("/phones", phonesRouter);
+const productRouter = require("./routes/api/product");
+app.use("/product", productRouter);
 
 const paymentLogsRouter = require("./routes/api/paymentLogs");
 app.use("/paymentLogs", paymentLogsRouter);
