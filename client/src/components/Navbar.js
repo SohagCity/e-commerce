@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { ProductConsumer } from "../context";
 import SearchIcon from "@material-ui/icons/Search";
-import { Navbar, Button, Nav, NavDropdown, Form } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Form } from "react-bootstrap";
 import AuthContext from "../AuthContext";
 import AuthService from "../Services/AuthService";
 

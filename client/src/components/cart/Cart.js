@@ -1,22 +1,13 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { withStyles } from "@material-ui/core/styles";
 import CartColumns from "./CartColumns";
 import EmptyCart from "./EmptyCart";
 import { ProductConsumer } from "../../context";
 import CartList from "./CartList";
 import { Link } from "react-router-dom";
 
-const styles = (theme) => ({
-  title: {
-    flexGrow: 1,
-  },
-});
-
 class Cart extends Component {
   render() {
-    const { classes } = this.props;
-
     return (
       <section>
         <ProductConsumer>
@@ -71,4 +62,4 @@ class Cart extends Component {
   }
 }
 
-export default withStyles(styles)(Cart);
+export default Cart;
