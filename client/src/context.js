@@ -21,7 +21,7 @@ class ProductProvider extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:5000/phones/").then((res) => {
+    axios.get("/phones/").then((res) => {
       if (res.data.length > 0) {
         this.setState(
           () => {
