@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
-require("dotenv").config();
+require("dotenv").config({ path: "ENV_FILENAME" });
 
 const app = express();
 
