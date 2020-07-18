@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import StoreIcon from "@material-ui/icons/Store";
 import { ProductConsumer } from "../context";
 import SearchIcon from "@material-ui/icons/Search";
 import { Navbar, Button, Nav, NavDropdown, Form } from "react-bootstrap";
-import { InputBase } from "@material-ui/core";
 import AuthContext from "../AuthContext";
 import AuthService from "../Services/AuthService";
-import { LinkContainer } from "react-router-bootstrap";
 
 class NavigationBar extends Component {
   static contextType = AuthContext;
@@ -66,7 +59,7 @@ class NavigationBar extends Component {
                   <NavDropdown.Item>Admin</NavDropdown.Item>
                 ) : null}
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={this.onClickLogoutHandler}>
+                <NavDropdown.Item href="/" onClick={this.onClickLogoutHandler}>
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>
