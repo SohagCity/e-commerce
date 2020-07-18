@@ -1,6 +1,6 @@
 export default {
   login: (user) => {
-    return fetch("http://localhost:5000/user/login", {
+    return fetch("/user/login", {
       method: "post",
       body: JSON.stringify(user),
       credentials: "same-origin",
@@ -17,7 +17,7 @@ export default {
     });
   },
   register: (user) => {
-    return fetch("http://localhost:5000/user/register", {
+    return fetch("/user/register", {
       method: "post",
       body: JSON.stringify(user),
       headers: {
@@ -28,12 +28,12 @@ export default {
       .then((data) => data);
   },
   logout: () => {
-    return fetch("http://localhost:5000/user/logout")
+    return fetch("/user/logout")
       .then((res) => res.json())
       .then((data) => data);
   },
   isAuthenticated: () => {
-    return fetch("http://localhost:5000/user/auth").then((res) => {
+    return fetch("/user/auth").then((res) => {
       if (res.status !== 401) {
         return res.json().then((data) => data);
       } else {
