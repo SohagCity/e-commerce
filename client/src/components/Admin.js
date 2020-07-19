@@ -23,14 +23,7 @@ class Admin extends Component {
     const users = this.state.users;
 
     users[index].role = event.target.value;
-    this.setState(
-      () => {
-        return { users };
-      },
-      () => {
-        console.log(this.state.users);
-      }
-    );
+    this.setState({ users });
   };
   onSubmit = (user, event) => {
     event.preventDefault();
@@ -38,7 +31,20 @@ class Admin extends Component {
     axios
       .post(`/user/update/` + user._id, user)
       .then((res) => console.log(res.data));
+
+    window.location.reload();
   };
+
+  onDelete = (user, event) => {
+    event.preventDefault();
+
+    axios
+      .delete(`/user/delete/` + user._id, user)
+      .then((res) => console.log(res.data));
+
+    window.location.reload();
+  };
+
   render() {
     return (
       <div>
@@ -65,10 +71,7 @@ class Admin extends Component {
 
         {this.state.users.map((user) => {
           return (
-            <div
-              className="row my-3 text-capitalize text-center"
-              key={user._id}
-            >
+            <div className="row my-3 text-center" key={user._id}>
               <div className="col-10 mx-auto col-lg-2">{`${user.firstName} ${user.lastName}`}</div>
               <div className="col-10 mx-auto col-lg-2">{user.username}</div>
               <div className="col-10 mx-auto col-lg-2">
@@ -90,7 +93,12 @@ class Admin extends Component {
                 <Button type="submit" form="changeRole">
                   Confirm
                 </Button>{" "}
-                <Button variant="danger">Delete</Button>
+                <Button
+                  onClick={(e) => this.onDelete(user, e)}
+                  variant="danger"
+                >
+                  Delete
+                </Button>
               </div>
             </div>
           );

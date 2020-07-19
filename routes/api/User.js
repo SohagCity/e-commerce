@@ -193,5 +193,15 @@ router.post(
     }
   }
 );
-
+router.delete(
+  "/delete/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.user.role === "admin") {
+      User.findByIdAndDelete(req.params.id)
+        .then(() => res.json("User deleted!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    }
+  }
+);
 module.exports = router;
