@@ -14,7 +14,6 @@ class NavigationBar extends Component {
       if (data.success) {
         this.setUser(data.user);
         this.context.setIsAuthenticated(false);
-        this.props.history.push("/");
       }
     });
   };
