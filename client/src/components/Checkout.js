@@ -3,6 +3,7 @@ import "react-credit-cards/lib/styles.scss";
 import "../App.css";
 import { Form, Col, Button } from "react-bootstrap";
 import ProductContext from "../context";
+import axios from "axios";
 
 export default class Checkout extends React.Component {
   static contextType = ProductContext;
@@ -16,13 +17,12 @@ export default class Checkout extends React.Component {
     country: "",
     postCode: "",
 
-    cvc: "",
+    cvv: "",
     expiry: "",
     name: "",
     number: "",
 
-    fullName: "",
-    fullAddress: "",
+    validated: false,
   };
 
   handleInputChange = (e) => {
@@ -33,38 +33,57 @@ export default class Checkout extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const card = {
-      name: this.state.name,
-      number: this.state.number,
-      expiry: this.state.expiry,
-      cvc: this.state.card,
-    };
-    const payment = {
-      fullName: this.state.firstName + " " + this.state.lastName,
-      fullAddress:
-        this.state.address1 +
-        ", " +
-        this.state.address2 +
-        ", " +
-        this.state.city +
-        ", " +
-        this.state.country +
-        ", " +
-        this.state.postCode +
-        ", ",
-      card: card,
-    };
-    console.log(payment);
+
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      const payment = {
+        name: this.state.firstName + " " + this.state.lastName,
+        address:
+          this.state.address1 +
+          ", " +
+          this.state.address2 +
+          ", " +
+          this.state.city +
+          ", " +
+          this.state.country +
+          ", " +
+          this.state.postCode +
+          ", ",
+        card: {
+          name: this.state.name,
+          number: this.state.number,
+          expiry: this.state.expiry,
+          cvv: this.state.cvv,
+        },
+        total: this.context.cartTotal,
+        products: [...this.context.cart],
+      };
+      console.log(payment);
+      axios
+        .post("/user/paymentLogs/add", payment)
+        .then((res) => console.log(res.data));
+
+      this.context.setProducts();
+    }
+    this.setState({ validated: true });
   };
   render() {
     return (
       <div className="container">
         <h1 className="text-title col-10 mx-auto my-2 text-center">Checkout</h1>
-        <Form onSubmit={this.onSubmit}>
+        <Form
+          noValidate
+          validated={this.state.validated}
+          onSubmit={this.onSubmit}
+        >
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>First Name</Form.Label>
               <Form.Control
+                required
                 name="firstName"
                 onChange={this.handleInputChange}
                 placeholder="Enter First Name"
@@ -74,6 +93,7 @@ export default class Checkout extends React.Component {
             <Form.Group as={Col}>
               <Form.Label>Last Name</Form.Label>
               <Form.Control
+                required
                 name="lastName"
                 onChange={this.handleInputChange}
                 placeholder="Enter Last Name"
@@ -83,6 +103,7 @@ export default class Checkout extends React.Component {
           <Form.Group>
             <Form.Label>Address</Form.Label>
             <Form.Control
+              required
               name="address1"
               onChange={this.handleInputChange}
               placeholder="1234 Main St"
@@ -93,7 +114,7 @@ export default class Checkout extends React.Component {
             <Form.Label className="text-muted">(optional)</Form.Label>
 
             <Form.Control
-              name="address1"
+              name="address2"
               onChange={this.handleInputChange}
               placeholder="Apartment, studio, or floor"
             />
@@ -101,17 +122,29 @@ export default class Checkout extends React.Component {
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>City</Form.Label>
-              <Form.Control name="city" onChange={this.handleInputChange} />
+              <Form.Control
+                required
+                name="city"
+                onChange={this.handleInputChange}
+              />
             </Form.Group>
 
             <Form.Group as={Col}>
               <Form.Label>Country</Form.Label>
-              <Form.Control name="city" onChange={this.handleInputChange} />
+              <Form.Control
+                required
+                name="country"
+                onChange={this.handleInputChange}
+              />
             </Form.Group>
 
             <Form.Group as={Col}>
               <Form.Label>Post Code</Form.Label>
-              <Form.Control name="postCode" onChange={this.handleInputChange} />
+              <Form.Control
+                required
+                name="postCode"
+                onChange={this.handleInputChange}
+              />
             </Form.Group>
           </Form.Row>
 
@@ -123,6 +156,7 @@ export default class Checkout extends React.Component {
             <Form.Group as={Col}>
               <Form.Label>Name on Card</Form.Label>
               <Form.Control
+                required
                 name="name"
                 onChange={this.handleInputChange}
                 placeholder="Enter name"
@@ -132,6 +166,12 @@ export default class Checkout extends React.Component {
             <Form.Group as={Col}>
               <Form.Label>Card Number</Form.Label>
               <Form.Control
+                required
+                onInput={(e) => {
+                  e.target.value = Math.max(0, parseInt(e.target.value))
+                    .toString()
+                    .slice(0, 16);
+                }}
                 name="number"
                 onChange={this.handleInputChange}
                 type="number"
@@ -146,6 +186,7 @@ export default class Checkout extends React.Component {
                 (day will be ignored)
               </Form.Label>
               <Form.Control
+                required
                 name="expiry"
                 onChange={this.handleInputChange}
                 type="date"
@@ -155,7 +196,13 @@ export default class Checkout extends React.Component {
             <Form.Group as={Col} xs={2}>
               <Form.Label>CVV</Form.Label>
               <Form.Control
+                required
                 name="cvv"
+                onInput={(e) => {
+                  e.target.value = Math.max(0, parseInt(e.target.value))
+                    .toString()
+                    .slice(0, 3);
+                }}
                 onChange={this.handleInputChange}
                 type="number"
                 placeholder="123"

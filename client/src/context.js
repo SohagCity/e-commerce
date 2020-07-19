@@ -21,7 +21,7 @@ class ProductProvider extends Component {
   }
 
   componentDidMount() {
-    axios.get("/phones/").then((res) => {
+    axios.get("/product/").then((res) => {
       if (res.data.length > 0) {
         this.setState(
           () => {
@@ -232,6 +232,7 @@ class ProductProvider extends Component {
             clearCart: this.clearCart,
             onChangeSearch: this.onChangeSearch,
             resetSearch: this.resetSearch,
+            setProducts: this.setProducts,
           }}
         >
           {this.props.children}

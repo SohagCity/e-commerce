@@ -45,7 +45,7 @@ router.route("/update/:id").post((req, res) => {
     .then((paymentLogs) => {
       paymentLogs.name = req.body.name;
       paymentLogs.address = req.body.address;
-      paymentLogs.paymentDetails = req.body.paymentDetails;
+      paymentLogs.card = req.body.card;
       paymentLogs.products = req.body.products;
       paymentLogs.total = Number(req.body.total);
 
