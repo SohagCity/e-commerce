@@ -5,6 +5,7 @@ let User = require("../../models/User.model");
 let PaymentLogs = require("../../models/PaymentLogs.model");
 let Product = require("../../models/Product.model");
 const passportConfig = require("../../passport");
+const mongoose = require("mongoose");
 
 require("dotenv").config();
 
@@ -108,19 +109,40 @@ router.post(
         cvv: cvv,
       },
       total,
-      products: req.body.products,
+      products: [],
     });
 
-    paymentLog
-      .save()
-      .then(() => {
-        req.user.paymentLogs.push(paymentLog);
-        req.user
+    const array = [];
+    req.body.products.forEach((e) => {
+      array.push(e._id);
+    });
+    /* Product.find({ _id: { $in: [...array] } }, (err, records) => {
+      paymentLog.products.push(array);
+    });
+*/
+    Product.find()
+      .where("_id")
+      .in(array)
+      .exec((err, records) => {
+        if (err) {
+          res.status(500).json({
+            message: { msgBody: "Error has occured", msgError: true },
+          });
+        }
+        paymentLog.products = records;
+        console.log(records);
+
+        paymentLog
           .save()
-          .then(() => res.json("Successfully created paymentLog"))
+          .then(() => {
+            req.user.paymentLogs.push(paymentLog);
+            req.user
+              .save()
+              .then(() => res.json(paymentLog))
+              .catch((err) => res.status(400).json("Error: " + err));
+          })
           .catch((err) => res.status(400).json("Error: " + err));
-      })
-      .catch((err) => res.status(400).json("Error: " + err));
+      });
   }
 );
 /*

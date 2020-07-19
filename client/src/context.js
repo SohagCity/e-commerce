@@ -74,7 +74,9 @@ class ProductProvider extends Component {
 
       const index = products.indexOf(selected);
       const product = products[index];
-      product.inCart = true;
+      if (cart) {
+        product.inCart = true;
+      }
     });
     this.setState({
       products: [...products],

@@ -13,7 +13,7 @@ const PaymentLogsSchema = new Schema(
       number: { type: Number, required: true },
       expiry: { type: String, required: true },
     },
-    products: [
+    /*products: [
       {
         title: { type: String, required: true },
         img: { type: String, required: true },
@@ -24,8 +24,8 @@ const PaymentLogsSchema = new Schema(
         count: { type: Number, required: true },
         total: { type: Number, required: true },
       },
-    ],
-    //products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
+    ],*/
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     total: { type: Number, required: true },
   },
   {
