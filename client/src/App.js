@@ -51,11 +51,11 @@ class App extends Component {
               roles={["user", "admin"]}
               component={Profile}
             ></PrivateRoute>
-            <Route
+            <PrivateRoute
               path="/checkout"
               roles={["user", "admin"]}
               component={Checkout}
-            ></Route>
+            ></PrivateRoute>
             <Route component={Default}></Route>
           </Switch>
           <Modal></Modal>
