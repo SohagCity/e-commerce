@@ -63,7 +63,6 @@ export default class Checkout extends React.Component {
         total: this.context.cartTotal,
         products: [...this.context.cart],
       };
-      console.log(payment);
       axios
         .post("/user/paymentLogs/add", payment)
         .then((res) => console.log(res.data));

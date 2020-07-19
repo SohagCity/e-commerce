@@ -5,14 +5,14 @@ import AuthContext from "../Context/AuthContext";
 class PrivateRoute extends Component {
   static contextType = AuthContext;
 
-  componentDidMount() {}
-
   render() {
     const { component: Component, roles, ...rest } = this.props;
     return (
       <Route
         {...rest}
         render={(props) => {
+          console.log(this.context.user);
+
           if (!this.context.isAuthenticated) {
             return (
               <Redirect
@@ -20,7 +20,7 @@ class PrivateRoute extends Component {
               ></Redirect>
             );
           }
-          if (!roles.includes(this.context.role)) {
+          if (!roles.includes(this.context.user.role)) {
             return (
               <Redirect
                 to={{ pathname: "/", state: { from: props.location } }}

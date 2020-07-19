@@ -19,6 +19,7 @@ class AuthProvider extends Component {
   }
   setIsAuthenticated = (isAuthenticated) => {
     this.setState({ isAuthenticated });
+    console.log(isAuthenticated);
   };
   setUser = (user) => {
     this.setState({ user });

@@ -16,7 +16,6 @@ class NavigationBar extends Component {
         this.context.setIsAuthenticated(false);
       }
     });
-    this.props.history.push("/");
   };
 
   render() {
@@ -54,26 +53,39 @@ class NavigationBar extends Component {
           </Nav>
           <Nav>
             {this.context.isAuthenticated ? (
-              <NavDropdown title="Account" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="/orders"> Your Orders</NavDropdown.Item>
+              <>
+                <NavLink to="/orders" className="nav-link">
+                  Your Orders
+                </NavLink>
                 {this.context.user.role === "admin" ? (
-                  <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
+                  <NavLink to="/admin" className="nav-link">
+                    Admin
+                  </NavLink>
                 ) : null}
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={this.onClickLogoutHandler}>
+
+                <NavLink
+                  onClick={this.onClickLogoutHandler}
+                  to="/"
+                  className="nav-link"
+                >
                   Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+                </NavLink>
+              </>
             ) : (
-              <NavDropdown title="Account" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="/register">Register</NavDropdown.Item>
-                <NavDropdown.Item href="/login"> Log in</NavDropdown.Item>
-              </NavDropdown>
+              <>
+                <NavLink to="/register" className="nav-link">
+                  Register
+                </NavLink>
+                <NavLink to="/login" className="nav-link">
+                  Login
+                </NavLink>
+              </>
             )}
 
             <NavLink
-              to="cart"
+              to="/cart"
               style={{ textDecoration: "none", color: "#FFFFFF" }}
+              className="nav-link"
             >
               <ShoppingCartIcon fontSize="large" />
               Cart

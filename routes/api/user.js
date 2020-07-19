@@ -87,19 +87,6 @@ router.get(
             message: { msgBody: "Error has occured", msgError: true },
           });
         else {
-          /*POPULATE PRODUCTS IN LOGS
-          document.paymentLogs.forEach((e) => {
-            PaymentLogs.findById(e._id)
-              .populate("paymentLogs")
-              .exec((err, document) => {
-                if (err) {
-                  res.status(500).json({
-                    message: { msgBody: "Error has occured", msgError: true },
-                  });
-                }
-              });
-          });
- */
           res
             .status(200)
             .json({ paymentLogs: document.paymentLogs, authenticated: true });
