@@ -12,8 +12,7 @@ class NavigationBar extends Component {
   onClickLogoutHandler = () => {
     AuthService.logout().then((data) => {
       if (data.success) {
-        console.log("logut");
-        this.setUser(data.user);
+        this.context.setUser(data.user);
         this.context.setIsAuthenticated(false);
       }
     });
