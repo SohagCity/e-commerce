@@ -59,7 +59,7 @@ router.get(
   "/logout",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.clearCookie("access_token");
+    res.clearCookie("access_token", { path: "/" });
     res.json({ user: { username: "", role: "" }, success: true });
   }
 );

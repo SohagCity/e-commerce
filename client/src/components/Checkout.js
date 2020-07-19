@@ -67,7 +67,7 @@ export default class Checkout extends React.Component {
         .post("/user/paymentLogs/add", payment)
         .then((res) => console.log(res.data));
       this.context.setProducts();
-      this.props.history.push("/");
+      this.props.history.push("/paymentSuccess");
     }
     this.setState({ validated: true });
   };
