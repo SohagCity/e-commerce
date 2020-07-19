@@ -41,7 +41,8 @@ export default class Checkout extends React.Component {
       e.stopPropagation();
     } else {
       const payment = {
-        name: this.state.firstName + " " + this.state.lastName,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
         address:
           this.state.address1 +
           ", " +
