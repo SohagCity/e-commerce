@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import { ProductConsumer } from "../context";
+import { ProductConsumer } from "../Context/ProductContext";
 import SearchIcon from "@material-ui/icons/Search";
 import { Navbar, Nav, NavDropdown, Form } from "react-bootstrap";
-import AuthContext from "../AuthContext";
+import AuthContext from "../Context/AuthContext";
 import AuthService from "../Services/AuthService";
 
 class NavigationBar extends Component {

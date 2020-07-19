@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ProductConsumer } from "../context";
+import { ProductConsumer } from "../Context/ProductContext";
 import { Button } from "react-bootstrap";
 
 export default class Navbar extends Component {

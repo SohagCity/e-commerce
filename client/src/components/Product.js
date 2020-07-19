@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { ProductConsumer } from "../context";
+import { ProductConsumer } from "../Context/ProductContext";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { Card, Button } from "react-bootstrap";
 

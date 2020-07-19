@@ -8,7 +8,7 @@ import Details from "./components/Details";
 import Cart from "./components/cart/Cart";
 import Modal from "./components/Modal";
 import Default from "./components/Default";
-import ProductContext from "./context";
+import ProductContext from "./Context/ProductContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import PrivateRoute from "./hocs/PrivateRoute";
@@ -52,11 +52,11 @@ class App extends Component {
               roles={["user", "admin"]}
               component={Profile}
             ></PrivateRoute>
-            <PrivateRoute
+            <Route
               path="/paymentSuccess"
               roles={["user", "admin"]}
               component={PaymentSuccess}
-            ></PrivateRoute>
+            ></Route>
             <Route
               path="/checkout"
               roles={["user", "admin"]}

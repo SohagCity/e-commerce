@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import CartColumns from "./CartColumns";
 import EmptyCart from "./EmptyCart";
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../Context/ProductContext";
 import CartList from "./CartList";
 import { Link } from "react-router-dom";
 

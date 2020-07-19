@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
-import AuthContext from "../AuthContext";
+import AuthContext from "../Context/AuthContext";
 
 class NonPrivateRoute extends Component {
   static contextType = AuthContext;

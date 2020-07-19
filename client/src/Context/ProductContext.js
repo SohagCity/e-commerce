@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import CartLocalStorage from "./components/CartLocalStorage";
+import CartLocalStorage from "../components/CartLocalStorage";
 
 const ProductContext = React.createContext();
 

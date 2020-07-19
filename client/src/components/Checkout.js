@@ -2,7 +2,7 @@ import React from "react";
 import "react-credit-cards/lib/styles.scss";
 import "../App.css";
 import { Form, Col, Button } from "react-bootstrap";
-import ProductContext from "../context";
+import ProductContext from "../Context/ProductContext";
 import axios from "axios";
 import EmptyCart from "./cart/EmptyCart";
 

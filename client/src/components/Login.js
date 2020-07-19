@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AuthContext from "../AuthContext";
+import AuthContext from "../Context/AuthContext";
 import { Form, Button } from "react-bootstrap";
 import AuthService from "../Services/AuthService";
 import { Link } from "react-router-dom";
