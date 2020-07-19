@@ -28,7 +28,7 @@ export default {
       .then((data) => data);
   },
   logout: () => {
-    return fetch("/user/logout")
+    return fetch("/user/logout", { method: "POST", credentials: "same-origin" })
       .then((res) => res.json())
       .then((data) => data);
   },
