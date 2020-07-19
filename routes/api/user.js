@@ -51,7 +51,10 @@ router.post(
       const { _id, username, role } = req.user;
       const token = signToken(_id);
       res.cookie("access_token", token, { httpOnly: true, sameSite: true });
-      res.status(200).json({ isAuthenticated: true, user: { username, role } });
+      res.status(200).json({
+        isAuthenticated: true,
+        user: { username, role },
+      });
     }
   }
 );
@@ -60,7 +63,15 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.clearCookie("access_token", { path: "/" });
-    res.json({ user: { username: "", role: "" }, success: true });
+    res.json({
+      user: {
+        username: "",
+        role: "",
+        firstName: "",
+        lastName: "",
+      },
+      success: true,
+    });
   }
 );
 
@@ -69,13 +80,26 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     User.findById({ _id: req.user._id })
-      .populate("paymentLogs")
+      .populate({ path: "paymentLogs", populate: { path: "products" } })
       .exec((err, document) => {
         if (err)
           res.status(500).json({
             message: { msgBody: "Error has occured", msgError: true },
           });
         else {
+          /*POPULATE PRODUCTS IN LOGS
+          document.paymentLogs.forEach((e) => {
+            PaymentLogs.findById(e._id)
+              .populate("paymentLogs")
+              .exec((err, document) => {
+                if (err) {
+                  res.status(500).json({
+                    message: { msgBody: "Error has occured", msgError: true },
+                  });
+                }
+              });
+          });
+ */
           res
             .status(200)
             .json({ paymentLogs: document.paymentLogs, authenticated: true });

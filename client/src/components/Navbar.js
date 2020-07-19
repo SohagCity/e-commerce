@@ -14,9 +14,9 @@ class NavigationBar extends Component {
       if (data.success) {
         this.context.setUser(data.user);
         this.context.setIsAuthenticated(false);
-        this.props.history.push("/");
       }
     });
+    this.props.history.push("/");
   };
 
   render() {
@@ -55,7 +55,7 @@ class NavigationBar extends Component {
           <Nav>
             {this.context.isAuthenticated ? (
               <NavDropdown title="Account" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="/profile"> Profile</NavDropdown.Item>
+                <NavDropdown.Item href="/orders"> Your Orders</NavDropdown.Item>
                 {this.context.user.role === "admin" ? (
                   <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
                 ) : null}

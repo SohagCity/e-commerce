@@ -15,9 +15,9 @@ import PrivateRoute from "./hocs/PrivateRoute";
 import Admin from "./components/Admin";
 import Checkout from "./components/Checkout";
 import NonPrivateRoute from "./hocs/NonPrivateRoute";
-import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 import PaymentSuccess from "./components/PaymentSuccess";
+import Orders from "./components/Orders";
 class App extends Component {
   static contextType = ProductContext;
   componentDidMount() {
@@ -48,20 +48,20 @@ class App extends Component {
               component={Admin}
             ></PrivateRoute>
             <PrivateRoute
-              path="/profile"
-              roles={["user", "admin"]}
-              component={Profile}
-            ></PrivateRoute>
-            <Route
               path="/paymentSuccess"
               roles={["user", "admin"]}
               component={PaymentSuccess}
-            ></Route>
-            <Route
+            ></PrivateRoute>
+            <PrivateRoute
               path="/checkout"
               roles={["user", "admin"]}
               component={Checkout}
-            ></Route>
+            ></PrivateRoute>
+            <PrivateRoute
+              path="/orders"
+              roles={["user", "admin"]}
+              component={Orders}
+            ></PrivateRoute>
             <Route component={Default}></Route>
           </Switch>
           <Modal></Modal>

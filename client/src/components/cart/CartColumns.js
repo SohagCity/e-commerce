@@ -20,11 +20,11 @@ class CartColumns extends Component {
           <div className="col-10 mx-auto col-lg-2">
             <strong className="text-uppercase">quantity</strong>
           </div>
-
-          <div className="col-10 mx-auto col-lg-2">
-            <strong className="text-uppercase">remove</strong>
-          </div>
-
+          {this.props.order ? null : (
+            <div className="col-10 mx-auto col-lg-2">
+              <strong className="text-uppercase">remove</strong>
+            </div>
+          )}
           <div className="col-10 mx-auto col-lg-2">
             <strong className="text-uppercase">total</strong>
           </div>
