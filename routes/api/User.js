@@ -127,10 +127,7 @@ router.post(
     req.body.products.forEach((e) => {
       array.push(e._id);
     });
-    /* Product.find({ _id: { $in: [...array] } }, (err, records) => {
-      paymentLog.products.push(array);
-    });
-*/
+
     Product.find()
       .where("_id")
       .in(array)
@@ -156,45 +153,15 @@ router.post(
       });
   }
 );
-/*
-router.post(
-  "/paymentLogs/add",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const paymentLog = new PaymentLogs(req.body);
-    paymentLog.save((err) => {
-      if (err)
-        res
-          .status(500)
-          .json({ message: { msgBody: "Error has occured", msgError: true } });
-      else {
-        req.user.paymentLogs.push(paymentLog);
-        req.user.save((err) => {
-          if (err)
-            res.status(500).json({
-              message: { msgBody: "Error has occured", msgError: true },
-            });
-          else
-            res.status(200).json({
-              message: {
-                msgBody: "Successfully created paymentLog",
-                msgError: false,
-              },
-            });
-        });
-      }
-    });
-  }
-);
-*/
+
 router.get(
   "/admin",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     if (req.user.role === "admin") {
-      res.status(200).json("you are an admin");
-    } else {
-      res.status(403).json("you are not an admin");
+      User.find()
+        .then((users) => res.json(users))
+        .catch((err) => res.status(400).json("Error: " + err));
     }
   }
 );
@@ -205,6 +172,25 @@ router.get(
   (req, res) => {
     const { username, role } = req.user;
     res.status(200).json({ isAuthenticated: true, user: { username, role } });
+  }
+);
+
+router.post(
+  "/update/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.user.role === "admin") {
+      User.findById(req.params.id)
+        .then((user) => {
+          user.role = req.body.role;
+
+          user
+            .save()
+            .then(() => res.json("user updated!"))
+            .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+    }
   }
 );
 
