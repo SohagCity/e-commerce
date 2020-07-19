@@ -14,6 +14,7 @@ class NavigationBar extends Component {
       if (data.success) {
         this.setUser(data.user);
         this.context.setIsAuthenticated(false);
+        this.props.history.push("/");
       }
     });
   };
@@ -59,7 +60,7 @@ class NavigationBar extends Component {
                   <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
                 ) : null}
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/" onClick={this.onClickLogoutHandler}>
+                <NavDropdown.Item onClick={this.onClickLogoutHandler}>
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>
