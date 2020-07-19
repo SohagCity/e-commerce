@@ -16,6 +16,7 @@ import Admin from "./components/Admin";
 import Checkout from "./components/Checkout";
 import NonPrivateRoute from "./hocs/NonPrivateRoute";
 import Profile from "./components/Profile";
+import Footer from "./components/Footer";
 class App extends Component {
   static contextType = ProductContext;
   componentDidMount() {
@@ -28,36 +29,39 @@ class App extends Component {
   }
   render() {
     return (
-      <React.Fragment>
-        <NavigationBar />
-        <Switch>
-          <Route exact path="/" component={ProductList}></Route>
-          <Route path="/details" component={Details}></Route>
-          <Route path="/cart" component={Cart}></Route>
-          <NonPrivateRoute path="/login" component={Login}></NonPrivateRoute>
-          <NonPrivateRoute
-            path="/register"
-            component={Register}
-          ></NonPrivateRoute>
-          <PrivateRoute
-            path="/admin"
-            roles={["admin"]}
-            component={Admin}
-          ></PrivateRoute>
-          <PrivateRoute
-            path="/profile"
-            roles={["user", "admin"]}
-            component={Profile}
-          ></PrivateRoute>
-          <Route
-            path="/checkout"
-            roles={["user", "admin"]}
-            component={Checkout}
-          ></Route>
-          <Route component={Default}></Route>
-        </Switch>
-        <Modal></Modal>
-      </React.Fragment>
+      <div className="page-container">
+        <div className="content-wrap">
+          <NavigationBar />
+          <Switch>
+            <Route exact path="/" component={ProductList}></Route>
+            <Route path="/details" component={Details}></Route>
+            <Route path="/cart" component={Cart}></Route>
+            <NonPrivateRoute path="/login" component={Login}></NonPrivateRoute>
+            <NonPrivateRoute
+              path="/register"
+              component={Register}
+            ></NonPrivateRoute>
+            <PrivateRoute
+              path="/admin"
+              roles={["admin"]}
+              component={Admin}
+            ></PrivateRoute>
+            <PrivateRoute
+              path="/profile"
+              roles={["user", "admin"]}
+              component={Profile}
+            ></PrivateRoute>
+            <Route
+              path="/checkout"
+              roles={["user", "admin"]}
+              component={Checkout}
+            ></Route>
+            <Route component={Default}></Route>
+          </Switch>
+          <Modal></Modal>
+        </div>
+        <Footer></Footer>
+      </div>
     );
   }
 }

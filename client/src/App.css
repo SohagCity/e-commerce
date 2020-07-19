@@ -44,3 +44,27 @@ body {
   font-size: 1.2rem;
   color: var(--mainYellow);
 }
+
+.footer {
+  /*  flex-shrink: 0;
+  text-align: center;
+  background-color: #dcdcdc;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+*/
+  text-align: center;
+
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+.content-wrap {
+  padding-bottom: 2.5rem;
+}
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
