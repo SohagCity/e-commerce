@@ -5,7 +5,6 @@ let User = require("../../models/User.model");
 let PaymentLogs = require("../../models/PaymentLogs.model");
 let Product = require("../../models/Product.model");
 const passportConfig = require("../../passport");
-const mongoose = require("mongoose");
 
 require("dotenv").config();
 
@@ -101,24 +100,11 @@ router.post(
   (req, res) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
-    const address = req.body.address;
-    const cardName = req.body.card.name;
-    const number = Number(req.body.card.number);
-    const expiry = req.body.card.expiry;
-    const cvv = Number(req.body.card.cvv);
-
     const total = Number(req.body.total);
 
     const paymentLog = new PaymentLogs({
       firstName,
       lastName,
-      address,
-      card: {
-        name: cardName,
-        number: number,
-        expiry: expiry,
-        cvv: cvv,
-      },
       total,
       products: [],
     });
