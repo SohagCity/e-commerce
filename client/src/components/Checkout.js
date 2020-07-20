@@ -67,12 +67,6 @@ class Checkout extends React.Component {
           name: this.state.firstName + ", " + this.state.lastName,
         },
       };
-      const paymentLog = {
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        total: this.context.cartTotal,
-        products: [...this.context.cart],
-      };
       let amount = { amount: this.context.cartTotal * 100 };
       fetch("/payment/secret", {
         method: "post",
@@ -95,11 +89,18 @@ class Checkout extends React.Component {
                 this.setState({ message: result.error.message });
                 console.log(result.error.message);
               } else {
+                console.log(result);
+                const paymentLog = {
+                  firstName: this.state.firstName,
+                  lastName: this.state.lastName,
+                  total: this.context.cartTotal,
+                  products: [...this.context.cart],
+                };
                 axios
                   .post("/user/paymentLogs/add", paymentLog)
                   .then((res) => console.log(res.data));
                 if (result.paymentIntent.status === "succeeded") {
-                  this.context.setProducts();
+                  localStorage.clear();
                   console.log("paymentSuccess");
                   window.location = "/paymentSuccess";
                 }

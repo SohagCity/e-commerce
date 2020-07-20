@@ -85,13 +85,14 @@ class ProductProvider extends Component {
 
   setProducts = () => {
     let products = [...this.state.products];
-    let cart = [...products.filter((item) => item.inCart === true)];
+    let cart = products.filter((item) => item.inCart === true);
     //cart.forEach((item) => (item.inCart = false));
     for (let i = 0; i < cart.length; i++) {
       const index = products.indexOf(cart[i]);
       const product = products[index];
       product.inCart = false;
     }
+    localStorage.clear();
     this.setState({ products: [...products] });
   };
 

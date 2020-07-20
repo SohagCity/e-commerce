@@ -47,11 +47,7 @@ class App extends Component {
               roles={["admin"]}
               component={Admin}
             ></PrivateRoute>
-            <PrivateRoute
-              path="/paymentSuccess"
-              roles={["user", "admin"]}
-              component={PaymentSuccess}
-            ></PrivateRoute>
+            <Route path="/paymentSuccess" component={PaymentSuccess}></Route>
             <PrivateRoute
               path="/payment"
               roles={["user", "admin"]}
