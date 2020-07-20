@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-//import { StripeProvider, Elements } from "react-stripe-elements";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { AuthConsumer } from "../Context/AuthContext";
