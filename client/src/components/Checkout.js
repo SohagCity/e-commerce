@@ -5,72 +5,111 @@ import { Form, Col, Button } from "react-bootstrap";
 import ProductContext from "../Context/ProductContext";
 import axios from "axios";
 import EmptyCart from "./cart/EmptyCart";
+import { ElementsConsumer, CardElement } from "@stripe/react-stripe-js";
+import CardSection from "./CardSection";
+import countryList from "react-select-country-list";
 
-export default class Checkout extends React.Component {
+class Checkout extends React.Component {
   static contextType = ProductContext;
+  constructor(props) {
+    super(props);
 
-  state = {
-    firstName: "",
-    lastName: "",
-    address1: "",
-    address2: "",
-    city: "",
-    country: "",
-    postCode: "",
+    this.options = countryList().getData();
 
-    cvv: "",
-    expiry: "",
-    name: "",
-    number: "",
+    this.state = {
+      firstName: "",
+      lastName: "",
+      address1: "",
+      address2: "",
+      city: "",
+      postCode: "",
 
-    validated: false,
-  };
+      cvv: "",
+      expiry: "",
+      name: "",
+      number: "",
+
+      validated: false,
+      message: "",
+      countries: this.options,
+      country: this.options[0].value,
+    };
+  }
 
   handleInputChange = (e) => {
     const { name, value } = e.target;
-
     this.setState({ [name]: value });
   };
 
-  onSubmit = (e) => {
+  onSubmit = async (e) => {
     e.preventDefault();
+
+    //stripe
+    const { stripe, elements } = this.props;
 
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
     } else {
-      const payment = {
+      const cardElement = elements.getElement(CardElement);
+      const paymentMethod = {
+        type: "card",
+        card: cardElement,
+        billing_details: {
+          address: {
+            city: this.state.city,
+            country: this.state.country,
+            line1: this.state.address1,
+            line2: this.state.address2,
+            postal_code: this.state.postCode,
+          },
+          name: this.state.firstName + ", " + this.state.lastName,
+        },
+      };
+      const paymentLog = {
         firstName: this.state.firstName,
         lastName: this.state.lastName,
-        address:
-          this.state.address1 +
-          ", " +
-          this.state.address2 +
-          ", " +
-          this.state.city +
-          ", " +
-          this.state.country +
-          ", " +
-          this.state.postCode +
-          ", ",
-        card: {
-          name: this.state.name,
-          number: this.state.number,
-          expiry: this.state.expiry,
-          cvv: this.state.cvv,
-        },
         total: this.context.cartTotal,
         products: [...this.context.cart],
       };
-      axios
-        .post("/user/paymentLogs/add", payment)
-        .then((res) => console.log(res.data));
-      this.context.setProducts();
-      this.props.history.push("/paymentSuccess");
+      let amount = { amount: this.context.cartTotal * 100 };
+      fetch("/payment/secret", {
+        method: "post",
+        body: JSON.stringify(amount),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((responseJson) => {
+          var clientSecret = responseJson.client_secret;
+          stripe
+            .confirmCardPayment(clientSecret, {
+              payment_method: paymentMethod,
+            })
+            .then((result) => {
+              if (result.error) {
+                this.setState({ message: result.error.message });
+                console.log(result.error.message);
+              } else {
+                axios
+                  .post("/user/paymentLogs/add", paymentLog)
+                  .then((res) => console.log(res.data));
+                if (result.paymentIntent.status === "succeeded") {
+                  this.context.setProducts();
+                  console.log("paymentSuccess");
+                  window.location = "/paymentSuccess";
+                }
+              }
+            });
+        });
     }
     this.setState({ validated: true });
   };
+
   render() {
     return (
       <div className="container">
@@ -84,7 +123,7 @@ export default class Checkout extends React.Component {
             <Form
               noValidate
               validated={this.state.validated}
-              onSubmit={this.onSubmit}
+              onSubmit={(e) => this.onSubmit(e)}
             >
               <Form.Row>
                 <Form.Group as={Col}>
@@ -142,7 +181,17 @@ export default class Checkout extends React.Component {
                     required
                     name="country"
                     onChange={this.handleInputChange}
-                  />
+                    as="select"
+                    value={this.state.country}
+                  >
+                    {this.state.countries.map((c) => {
+                      return (
+                        <option key={c.value} value={c.value}>
+                          {c.label}
+                        </option>
+                      );
+                    })}
+                  </Form.Control>
                 </Form.Group>
 
                 <Form.Group as={Col}>
@@ -154,74 +203,25 @@ export default class Checkout extends React.Component {
                   />
                 </Form.Group>
               </Form.Row>
-
               <Form.Row>
                 <Form.Group as={Col}></Form.Group>
               </Form.Row>
-
               <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>Name on Card</Form.Label>
-                  <Form.Control
-                    required
-                    name="name"
-                    onChange={this.handleInputChange}
-                    placeholder="Enter name"
-                  />
-                </Form.Group>
+                <Form.Group
+                  as={Col}
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                ></Form.Group>
+              </Form.Row>
 
-                <Form.Group as={Col}>
-                  <Form.Label>Card Number</Form.Label>
-                  <Form.Control
-                    required
-                    onInput={(e) => {
-                      e.target.value = Math.max(0, parseInt(e.target.value))
-                        .toString()
-                        .slice(0, 16);
-                    }}
-                    name="number"
-                    onChange={this.handleInputChange}
-                    type="number"
-                    placeholder="4111 1111 1111 1111"
-                  />
-                </Form.Group>
-              </Form.Row>
-              <Form.Row>
-                <Form.Group as={Col} xs={4}>
-                  <Form.Label>Expiration Date </Form.Label>
-                  <Form.Label className="text-muted">
-                    (day will be ignored)
-                  </Form.Label>
-                  <Form.Control
-                    required
-                    name="expiry"
-                    onChange={this.handleInputChange}
-                    type="date"
-                  />
-                </Form.Group>
-                <Form.Group as={Col} xs={2}></Form.Group>
-                <Form.Group as={Col} xs={2}>
-                  <Form.Label>CVV</Form.Label>
-                  <Form.Control
-                    required
-                    name="cvv"
-                    onInput={(e) => {
-                      e.target.value = Math.max(0, parseInt(e.target.value))
-                        .toString()
-                        .slice(0, 3);
-                    }}
-                    onChange={this.handleInputChange}
-                    type="number"
-                    placeholder="123"
-                  />
-                </Form.Group>
-              </Form.Row>
+              <label>Card Details</label>
+              <CardSection />
 
               <h3 className="text-center">
                 <span> Total :</span>
                 <strong>£ {this.context.cartTotal}</strong>
               </h3>
-
               <Form.Row>
                 <Form.Group as={Col}></Form.Group>
               </Form.Row>
@@ -229,6 +229,9 @@ export default class Checkout extends React.Component {
                 <Button variant="primary" size="lg" type="submit" block>
                   Pay
                 </Button>
+                <h3 className="p-2" style={{ color: "#FF0000" }}>
+                  {this.state.message}
+                </h3>
               </div>
             </Form>
           </div>
@@ -236,4 +239,13 @@ export default class Checkout extends React.Component {
       </div>
     );
   }
+}
+export default function InjectedCheckoutForm() {
+  return (
+    <ElementsConsumer>
+      {({ stripe, elements }) => (
+        <Checkout stripe={stripe} elements={elements} />
+      )}
+    </ElementsConsumer>
+  );
 }

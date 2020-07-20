@@ -38,7 +38,7 @@ class Cart extends Component {
                             clear
                           </Button>
                         </Link>{" "}
-                        <Link to="/checkout">
+                        <Link to="/payment">
                           <Button
                             className="text-uppercase mb-3 px-5"
                             color="secondary"

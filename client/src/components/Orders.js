@@ -38,10 +38,6 @@ class Orders extends Component {
                   <span>order id : </span>
                   <strong>{log._id}</strong>
                   <div className="row">
-                    <span>Address : </span>
-                    <strong>{log.address}</strong>
-                  </div>
-                  <div className="row">
                     <div className="col-10 mt-2 ml-sm-5 ml-md-auto col-sm-8 text-capitalize text-right">
                       <h5>
                         <span> total :</span>

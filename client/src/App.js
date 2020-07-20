@@ -13,11 +13,11 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import PrivateRoute from "./hocs/PrivateRoute";
 import Admin from "./components/Admin";
-import Checkout from "./components/Checkout";
 import NonPrivateRoute from "./hocs/NonPrivateRoute";
 import Footer from "./components/Footer";
 import PaymentSuccess from "./components/PaymentSuccess";
 import Orders from "./components/Orders";
+import Payment from "./components/Payment";
 class App extends Component {
   static contextType = ProductContext;
   componentDidMount() {
@@ -53,9 +53,9 @@ class App extends Component {
               component={PaymentSuccess}
             ></PrivateRoute>
             <PrivateRoute
-              path="/checkout"
+              path="/payment"
               roles={["user", "admin"]}
-              component={Checkout}
+              component={Payment}
             ></PrivateRoute>
             <PrivateRoute
               path="/orders"
