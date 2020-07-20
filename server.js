@@ -31,13 +31,10 @@ app.use("/paymentLogs", paymentLogsRouter);
 const userRouter = require("./routes/api/User");
 app.use("/user", userRouter);
 
-if (process.env.NODE_ENV === "production") {
-  /*
-  app.use(express.static("../build"));
+const paymentRouter = require("./routes/api/Payment");
+app.use("/payment", paymentRouter);
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });*/
+if (process.env.NODE_ENV === "production") {
   const root = require("path").join(__dirname, "client", "build");
   app.use(express.static(root));
   app.get("*", (req, res) => {
